@@ -24,7 +24,7 @@ let convolution = fun image_in filter ->
   out_matrix
 
 
-let convoFactory = fun conv_function image_in filterArray ->
-  let outImgs = Array.init (Array.length filterArray) (fun fil -> conv_function image_in filterArray.(fil)) in
+let convoFactory = fun image_in filterArray ->
+  let outImgs = Array.init (Array.length filterArray) (fun fil -> convolution image_in filterArray.(fil)) in
   outImgs
     
