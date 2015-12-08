@@ -22,6 +22,11 @@ let convolution = fun image_in filter ->
   in
   let out_matrix = Array.init sizen (fun i -> Array.init sizem (fun j -> one_sum i j)) in
   out_matrix
+
+
+let convoFactory = fun conv_function image_in filterArray ->
+  let outImgs = Array.init (Array.length filterArray) (fun fil -> conv_function image_in filterArray.(fil)) in
+  outImgs
     
 let convo_result = fun file image_out ->
   let oc = open_out file in
