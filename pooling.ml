@@ -19,7 +19,6 @@ let poolimg = fun poolFct inputImg ->
 let sumPooling = fun pixs ->
   List.fold_left ( + ) 0 pixs
 
-
 let max x y = if x < y then y else x
 let maxPooling = fun pixs ->
   match pixs with
@@ -27,3 +26,9 @@ let maxPooling = fun pixs ->
   | [] -> failwith "maximum of an empty list !\n"
 
 let basicPool = poolimg maxPooling
+
+let poolConvImg = fun poolImg layerSet ->
+  let outputConvImg = Array.init (Array.length layerSet) (fun i -> poolImg layerSet.(i)) in
+  outputConvImg
+
+let maxPoolConvImg = poolConvImg (poolimg maxPooling)
