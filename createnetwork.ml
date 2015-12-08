@@ -1,4 +1,11 @@
-let imgs = Array.init
+let init_reseau = fun imgs nbN ->
+  Random.self_init ();
+  let n = Array.length imgs.(0) in
+  let x = Array.length imgs.(0).(0) in
+  let y = Array.length imgs.(0).(0).(0) in
+
+  let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init x ( fun k -> Array.init y ( fun l -> (Random.float 10.) -. 5.)))) in
+  res ;;
     
 let sigmoide = fun x ->
   1./.(1.+.exp(-.(x)));;
