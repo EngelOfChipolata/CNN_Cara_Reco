@@ -1,3 +1,5 @@
+type image = int array array
+
 let importimg = fun imgpath high width ->
   let channel = open_in imgpath in
   seek_in channel 73;

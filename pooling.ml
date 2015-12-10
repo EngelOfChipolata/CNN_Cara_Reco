@@ -19,7 +19,6 @@ let poolimg = fun poolFct inputImg ->
 let sumPooling = fun pixs ->
   List.fold_left ( + ) 0 pixs
 
-let max x y = if x < y then y else x
 let maxPooling = fun pixs ->
   match pixs with
     x :: xs -> List.fold_left max x xs
