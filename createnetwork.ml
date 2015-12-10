@@ -1,8 +1,5 @@
-let initReseau = fun imgs nbN ->
+let initReseau = fun x y n nbN ->
   Random.self_init ();
-  let n = Array.length imgs in
-  let x = Array.length imgs.(0) in
-  let y = Array.length imgs.(0).(0) in
 
   let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init x ( fun k -> Array.init y ( fun l -> (Random.float 0.0001)-.0.00005)))) in
   res ;;
