@@ -27,4 +27,12 @@ let convolution = fun image_in filter ->
 let convoFactory = fun image_in filterArray ->
   let outImgs = Array.init (Array.length filterArray) (fun fil -> convolution image_in filterArray.(fil)) in
   outImgs
+
+
+let createrandomfilter = fun height width ->
+  Random.self_init ();
+  Array.init height (fun _ -> Array.init width (fun _ -> Random.int 10 - 5))
+
+let randomfilterfactory = fun height width layer ->
+  Array.init layer (fun _ -> createrandomfilter height width)
     
