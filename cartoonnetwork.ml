@@ -1,4 +1,4 @@
-let initReseau = fun n nbN ->
+let initReseau = fun n nbN ->  (* n = nb de neuronnes intermédiaires  nbN nombre de neuronnes en sortie *)
   Random.self_init ();
   let cartoonRes = Array.init nbN (fun i -> Array.init n ( fun j -> (Random.float 0.0001)-.0.00005)) in
   cartoonRes ;;
@@ -6,10 +6,10 @@ let initReseau = fun n nbN ->
 let sigmoide = fun x ->
   1./.(1.+.exp(-.(x)));;
 
-let funSum = fun a intRes cartoonRes ->
-
+let funSum = fun a intRes cartoonRes -> (* a : neuronne de sortie sur lequel on somme ses connexions*)
+                                        (*, intRes neuronnes intermédiares cartoonRes neuronnes de sortie*)
   let rn = Array.length intRes - 1 in
-  let s = ref 0. in
+  let s = ref 0. in    (* variable de somme *)
   
   for i = 0 to rn do      (* n° neur *)
         s:= !s +. intRes.(i) *. cartoonRes.(a).(i)
