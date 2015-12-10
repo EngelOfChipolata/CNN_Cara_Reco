@@ -26,7 +26,7 @@ let funSum = fun a imgs res ->
   done;
   !s;;
 
-let creaNeu = fun imgs res fctseuil fctsomme ->
+let creaNeu = fun fctseuil fctsomme res imgs->
   
   (* Longueur du reseau de neuronnes*)
   let rm = Array.length res in     (* nombre de neurones en sortie *)
@@ -34,7 +34,8 @@ let creaNeu = fun imgs res fctseuil fctsomme ->
   (* val de sortie des neuronnes *)
   let valNeu = Array.init rm (fun i -> fctseuil (fctsomme i imgs res)) in
   valNeu;;
-  
+ 
+let computeNeurons = creaNeu sigmoide funSum
 
 (* Test 
 
