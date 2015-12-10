@@ -1,3 +1,7 @@
+type intermediateweights = float array array array array
+
+type intermediateoutput = float array
+
 let initReseau = fun imgs nbN ->
   Random.self_init ();
   let n = Array.length imgs in
