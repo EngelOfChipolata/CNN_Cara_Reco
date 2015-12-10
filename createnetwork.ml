@@ -26,7 +26,7 @@ let funSum = fun a imgs res ->
   done;
   !s;;
 
-let creaNeu = fun imgs res fctseuil fctsomme nbN->
+let creaNeu = fun imgs res fctseuil fctsomme ->
   
   (* Longueur du reseau de neuronnes*)
   let rm = Array.length res in     (* nombre de neurones en sortie *)
@@ -39,13 +39,13 @@ let creaNeu = fun imgs res fctseuil fctsomme nbN->
 (* Test 
 
 let nbN = 200 in
-let imgs = Array.init 10 ( fun i -> Array.init 25 ( fun j -> Array.init 25 ( fun l -> Random.int 255))) in
+let imgs = Array.init 20 ( fun i -> Array.init 15 ( fun j -> Array.init 15 ( fun l -> Random.int 255))) in
 let res = initReseau imgs nbN in
 
 let s = ref (Array.init 200 ( fun _ -> 0. )) in
 for i = 0 to 100 do
- s := creaNeu imgs res sigmoide funSum nbN;
-done
-  
-Array.iter (fun i -> Printf.printf "%g\n" i) valNeu;; *)
+ s := creaNeu imgs res sigmoide funSum;
+done;
+Printf.printf "Fini\n";;
+Array.iter (fun i -> Printf.printf "%g\n" i) valNeu;;*)
 
