@@ -1,4 +1,4 @@
-SOURCES = importscans.ml convolutional.ml pooling.ml createnetwork.ml debug.ml computevision.ml
+SOURCES = importscans.ml convolutional.ml pooling.ml createnetwork.ml cartoonnetwork.ml debug.ml computevision.ml
 TARGET = CNN
 OCAMLC = ocamlc -g
 DEP = ocamldep
