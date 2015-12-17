@@ -5,14 +5,13 @@ type intermediateoutput = float array
 let initReseau = fun x y n nbN ->
   Random.self_init ();
 
-  let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init x ( fun k -> Array.init y ( fun l -> (Random.float 0.0001)-.0.00005)))) in
+  let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init x ( fun k -> Array.init y ( fun l -> (Random.float 0.5)-.0.25)))) in
   res ;;
     
 let sigmoide = fun x ->
   1./.(1.+.exp(-.(x)));;
 
 let funSum = fun a imgs res ->
-
   let rn = Array.length res.(0) - 1 in
   let ri = Array.length res.(0).(0) - 1 in
   let rj = Array.length res.(0).(0).(0) -1 in
@@ -28,10 +27,8 @@ let funSum = fun a imgs res ->
   !s;;
 
 let creaNeu = fun fctseuil fctsomme res imgs->
-  
   (* Longueur du reseau de neuronnes*)
   let rm = Array.length res in     (* nombre de neurones en sortie *)
-
   (* val de sortie des neuronnes *)
   let valNeu = Array.init rm (fun i -> fctseuil (fctsomme i imgs res)) in
   valNeu;;
