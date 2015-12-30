@@ -25,25 +25,3 @@ let createNetwork = fun () ->
   let network = {filterImgs=filterimgs; inter_weights=interw; final_weights=finalw} in
   network
 
-let () =
-  let net = createNetwork () in
-  let img = Importscans.importimg "Caracteres/1/10.pgm" 28 28 in
-  let values = computeImg img net in
-  Array.iter (fun i -> Printf.printf "%f  " i ) values;
-  Printf.printf "\n";
-
-  let img = Importscans.importimg "Caracteres/1/58.pgm" 28 28 in
-  let values = computeImg img net in
-  Array.iter (fun i -> Printf.printf "%f  " i ) values;
-  Printf.printf "\n\n";
-  
-  let img = Importscans.importimg "Caracteres/8/5.pgm" 28 28 in
-  let values = computeImg img net in
-  Array.iter (fun i -> Printf.printf "%f  " i ) values;
-  Printf.printf "\n";
-
-    
-  let img = Importscans.importimg "Caracteres/8/55.pgm" 28 28 in
-  let values = computeImg img net in
-  Array.iter (fun i -> Printf.printf "%f  " i ) values;
-  Printf.printf "\n\n"
