@@ -1,5 +1,5 @@
 type neuronalNetwork = {
-    filterImgs : int array array array;
+    filterImgs : float array array array;
     inter_weights : float array array array array;
     final_weights : float array array;
   }
