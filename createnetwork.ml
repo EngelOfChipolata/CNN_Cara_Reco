@@ -20,7 +20,7 @@ let funSum = fun a imgs res ->
   for b = 0 to rn do      (* n° layers *)
     for c = 0 to ri do    (* n° lignes layer *)
       for d = 0 to rj do  (* n° colnnes layer *)
-        s:= !s +. float (imgs.(b).(c).(d)) *. res.(a).(b).(c).(d)
+        s:= !s +. imgs.(b).(c).(d) *. res.(a).(b).(c).(d)
       done
     done
   done;
