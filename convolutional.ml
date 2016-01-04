@@ -29,10 +29,10 @@ let convoFactory = fun image_in filterArray ->
   outImgs
 
 
-let createrandomfilter = fun height width ->
+let createrandomfilter = fun size ->
   Random.self_init ();
-  Array.init height (fun _ -> Array.init width (fun _ -> Random.float 10. -. 5.))
+  Array.init size (fun _ -> Array.init size (fun _ -> Random.float 10. -. 5.))
 
-let randomfilterfactory = fun height width layer ->
-  Array.init layer (fun _ -> createrandomfilter height width)
+let randomfilterfactory = fun size layer ->
+  Array.init layer (fun _ -> createrandomfilter size)
     

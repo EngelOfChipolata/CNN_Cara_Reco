@@ -4,4 +4,4 @@ type neuronalNetwork = {
   final_weights : float array array;
 }
 val computeImg : Importscans.image -> neuronalNetwork -> float array
-val createNetwork : unit -> neuronalNetwork
+val createNetwork : int * int * int * int * int -> neuronalNetwork

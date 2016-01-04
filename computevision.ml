@@ -1,5 +1,5 @@
 type neuronalNetwork = {
-    filterImgs : float array array array;
+    filterImgs : Importscans.image array;
     inter_weights : float array array array array;
     final_weights : float array array;
   }
@@ -12,16 +12,11 @@ let computeImg = fun img network ->
   let finalValues = Cartoonnetwork.computeNeurons network.final_weights interValues in
   finalValues
 
-let createNetwork = fun () ->
-  let filter_width = 3 in
-  let filter_height = 3 in
-  let filter_nb = 4 in
-  let pooled_width = 13 in
-  let pooled_height = 13 in
-  let nb_neu_inter = 100 in
-  let filterimgs = Convolutional.randomfilterfactory filter_width filter_height filter_nb in
-  let interw = Createnetwork.initReseau pooled_width pooled_height filter_nb nb_neu_inter in
-  let finalw = Cartoonnetwork.initReseau nb_neu_inter 10 in
+let createNetwork = fun info ->
+  let filter_nb, filter_size, nb_neu_inter, pooled_size, nbNeurFin = info in
+  
+  let filterimgs = Convolutional.randomfilterfactory filter_size filter_nb in
+  let interw = Createnetwork.initReseau pooled_size filter_nb nb_neu_inter in
+  let finalw = Cartoonnetwork.initReseau nb_neu_inter nbNeurFin in
   let network = {filterImgs=filterimgs; inter_weights=interw; final_weights=finalw} in
   network
-
