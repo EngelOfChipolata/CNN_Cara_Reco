@@ -55,5 +55,5 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
     if (testfit  < !bestfitvalue)
     then begin bestfit := population.(i); bestfitvalue := testfit end;
   done;
-  !bestfit
+  (!bestfit, population)
   
