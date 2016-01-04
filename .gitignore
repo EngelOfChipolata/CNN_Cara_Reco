@@ -1,4 +1,6 @@
 *~
 *.cmi
 *.cmo
-Caracteres/
+*.pgm
+Carateres/*
+.gitignore
