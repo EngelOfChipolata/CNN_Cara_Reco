@@ -14,7 +14,7 @@ let sigmoide = fun x ->
 let funSum = fun a imgs res ->
   let rn = Array.length res.(0) - 1 in
   let ri = Array.length res.(0).(0) - 1 in
-  let rj = Array.length res.(0).(0).(0) -1 in
+  let rj = Array.length res.(0).(0).(0) - 1 in
   
   let s = ref 0. in
   for b = 0 to rn do      (* n° layers *)
