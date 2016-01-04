@@ -1,9 +1,10 @@
 let rosenbrock = fun x ->
   (1. -. x.(0))**2. +. 100.0 *. (x.(1) -. x.(0)**2.)**2.
 
-let de = fun populationsize dimensionsize initborder nbitermax differentialweight crossoverproba func ->
+let de = fun populationsize funinit nbitermax differentialweight crossoverproba func ->
   Random.self_init ();
-  let population = Array.init populationsize (fun _ -> (Array.init dimensionsize (fun _ -> (Random.float 2. *. initborder -. initborder)))) in
+  let population = Array.init populationsize (fun _ -> funinit) in
+  let dimensionsize = Array.length population.(0) in
   let nbiter = ref 0 in
   while (!nbiter < nbitermax) do
     for n=0 to (populationsize - 1) do
