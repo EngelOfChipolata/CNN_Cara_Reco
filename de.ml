@@ -6,11 +6,11 @@ let initrand = fun dimsize border ->
   Array.init dimsize (fun _ -> Random.float (2. *. border) -. border)
 
 
-let de = fun populationsize indiinit nbitermax differentialweight crossoverproba func ->
+let de = fun population nbitermax differentialweight crossoverproba func ->
   Random.self_init ();
-  let population = Array.init populationsize indiinit in
   let dimensionsize = Array.length population.(0) in
   let nbiter = ref 0 in
+  let populationsize = Array.length population in
   while (!nbiter < nbitermax) do
     for n=0 to (populationsize - 1) do
       let x = Random.int (Array.length population) in

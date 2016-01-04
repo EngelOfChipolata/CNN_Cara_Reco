@@ -59,3 +59,7 @@ let tabToSave = fun tab info ->
 
   let network = {Computevision.filterImgs=filterimgs; Computevision.inter_weights=interw; Computevision.final_weights=finalw} in
   network;;
+
+let createInlinePopulation = fun info nb ->
+  let population = Array.init nb (fun _ -> saveToTab (Computevision.createNetwork info)) in
+  population 
