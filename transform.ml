@@ -1,6 +1,3 @@
-type plop = Computevision.neuronalNetwork
-
-      
 let saveToTab = fun neurNet ->
   let filterimgs = neurNet.Computevision.filterImgs in
   let interw = neurNet.Computevision.inter_weights in
@@ -16,14 +13,17 @@ let saveToTab = fun neurNet ->
   let nbNeurFin = Array.length finalw.(0) in
 
   let tab = Array.make (nbFil * filSize * filSize + nbNeurInt * nbLay * imgSize * imgSize + nbNeurInt * nbNeurFin + 9) 0. in
+  (*
   tab.(0) <- float nbFil;
   tab.(1) <- float filSize;
   tab.(2) <- float nbNeurInt;
   tab.(3) <- float nbLay;
   tab.(4) <- float imgSize;
-  tab.(5) <- float nbNeurFin;
+  tab.(5) <- float nbNeurFin;*)
+
+  let info = (nbFil, filSize, nbNeurInt, nbLay, imgSize, nbNeurFin) in
   
-  let avancement = ref 6 in
+  let avancement = ref 0 in
       
   let cpyw = fun nb ->
     tab.(!avancement) <- nb;
@@ -45,18 +45,13 @@ let saveToTab = fun neurNet ->
   Array.iter cpyw3 filterimgs;
   Array.iter cpyw4 interw;
   Array.iter cpyw2 finalw;
-  tab;;
+  (tab, info);;
 
-let tabToSave = fun tab ->
+let tabToSave = fun tab info ->
   
-  let nbFil = int_of_float tab.(0) in
-  let filSize = int_of_float tab.(1) in
-  let nbNeurInt = int_of_float tab.(2) in
-  let nbLay = int_of_float tab.(3) in
-  let imgSize = int_of_float tab.(4) in
-  let nbNeurFin = int_of_float tab.(5) in
+  let nbFil, filSize, nbNeurInt, nbLay, imgSize, nbNeurFin = info in
 
-  let avancement = ref 6 in
+  let avancement = ref 0 in
 
   let extract = fun _ ->
     let nb = tab.(!avancement) in
