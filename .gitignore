@@ -2,5 +2,5 @@
 *.cmi
 *.cmo
 *.pgm
-Carateres/*
+Caracteres/
 .gitignore
