@@ -1,9 +1,14 @@
 let rosenbrock = fun x ->
   (1. -. x.(0))**2. +. 100.0 *. (x.(1) -. x.(0)**2.)**2.
 
-let de = fun populationsize funinit nbitermax differentialweight crossoverproba func ->
+let initrand = fun dimsize border ->
   Random.self_init ();
-  let population = Array.init populationsize (fun _ -> funinit) in
+  Array.init dimsize (fun _ -> Random.float (2. *. border) -. border)
+
+
+let de = fun populationsize indiinit nbitermax differentialweight crossoverproba func ->
+  Random.self_init ();
+  let population = Array.init populationsize indiinit in
   let dimensionsize = Array.length population.(0) in
   let nbiter = ref 0 in
   while (!nbiter < nbitermax) do
@@ -36,6 +41,7 @@ let de = fun populationsize funinit nbitermax differentialweight crossoverproba 
         if (Random.int dimensionsize == r) || (Random.float 1. < crossoverproba)
         then candidate.(dim) <- indi1.(dim) +. differentialweight *. (indi2.(dim)-. indi3.(dim))
       done;
+      (*Printf.printf "candi : %f,%f\torig : %f,%f\tcandifit %f\t origifit %f\n" candidate.(0) candidate.(1) original.(0) original.(1) (func candidate) (func original);*)
       if (func candidate < func original)
       then population.(x) <- candidate
     done;

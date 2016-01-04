@@ -1,4 +1,5 @@
 val rosenbrock : float array -> float
 val de :
   int ->
-  float array -> int -> float -> float -> (float array -> 'a) -> float array
+  (int -> float array) ->
+  int -> float -> float -> (float array -> float) -> float array
