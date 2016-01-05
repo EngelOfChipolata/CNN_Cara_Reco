@@ -7,12 +7,11 @@ let saveToTab = fun neurNet ->
   let filSize = Array.length filterimgs.(0) in
 
   let nbNeurInt = Array.length interw in
-  let nbLay = Array.length interw.(0) in
   let imgSize = Array.length interw.(0).(0) in
 
   let nbNeurFin = Array.length finalw.(0) in
 
-  let tab = Array.make (nbFil * filSize * filSize + nbNeurInt * nbLay * imgSize * imgSize + nbNeurInt * nbNeurFin + 9) 0. in
+  let tab = Array.make (nbFil * filSize * filSize + nbNeurInt * nbFil * imgSize * imgSize + nbNeurInt * nbNeurFin) 0. in
   
  (*  filter_width, filter_height, filter_nb, pooled_width, pooled_height, nb_neu_inter 
   let info = (nbFil, filSize, nbNeurInt, nbLay, imgSize, nbNeurFin) in*)
