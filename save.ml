@@ -7,7 +7,8 @@ let save_pop = fun filename info pop ->
   let a,b,c,d,e = info in
   Printf.fprintf channel "%d\n%d\n%d\n%d\n%d\n\n" a b c d e;
   Printf.fprintf channel "%d\n\n" (Array.length pop);
-  Array.iter (fun ind -> save_vector channel ind) pop
+  Array.iter (fun ind -> save_vector channel ind) pop;
+  close_out channel
 
 let get_fvalue = fun channel ->
   let st_wei = input_line channel in
@@ -32,7 +33,9 @@ let open_pop = fun filename ->
   let _ = input_line channel in
   let info = (filter_nb, filter_size, nb_neu_inter, pooled_size, nbNeurFin) in
   let nbw = filter_nb * filter_size * filter_size + nb_neu_inter * filter_nb * pooled_size * pooled_size + nb_neu_inter * nbNeurFin in
-  Array.init nb_ind (fun _-> get_ind channel nbw)
+  let pop = Array.init nb_ind (fun _-> get_ind channel nbw) in
+  close_in channel;
+  (info, pop)
 
 
 

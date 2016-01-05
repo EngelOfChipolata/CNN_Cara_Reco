@@ -17,7 +17,7 @@ let () =
   Printf.printf "\nIndividu final :\n";
   Printf.printf "%f" (evalfun bestweights);
   Save.save_pop "tata" info pop_finale;
-  (*let re = Save.open_pop "tata2" in
-  Printf.printf "fin"*)
+  let inf2, pop2 = Save.open_pop "tata" in
+  Save.save_pop "tata3" inf2 pop2;
   
 
