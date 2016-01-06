@@ -15,13 +15,13 @@ $(TARGET): $(OBJS)
 %.cmi: %.mli
 	$(OCAMLOPT) $<
 
-%.cmo: %.ml
+%.cmx: %.ml
 	$(OCAMLOPT) -c $<
 
 .PHONY: clean
 
 clean:
-	rm -f *.cm[ix] *~
+	rm -f *.cm[ix] *~ *.o
 
 .depend: $(SOURCES)
 	$(DEP) *.mli *.ml > .depend
