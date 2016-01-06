@@ -1,3 +1,5 @@
+type inlineWeights = float array
+
 let saveToTab = fun neurNet ->
   let filterimgs = neurNet.Computevision.filterImgs in
   let interw = neurNet.Computevision.inter_weights in

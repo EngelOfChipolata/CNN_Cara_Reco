@@ -1,6 +1,6 @@
 SOURCES = importscans.ml convolutional.ml pooling.ml createnetwork.ml cartoonnetwork.ml debug.ml computevision.ml neteval.ml transform.ml de.ml save.ml learn.ml main.ml
 TARGET = CNN
-OCAMLC = ocamlc -g
+OCAMLC = ocamlc
 DEP = ocamldep
 OBJS = $(SOURCES:.ml=.cmo)
 
@@ -20,7 +20,7 @@ $(TARGET): $(OBJS)
 .PHONY: clean
 
 clean:
-	rm -f *.cm[io] *~
+	rm -f *.cm[io] *~ *.o
 
 .depend: $(SOURCES)
 	$(DEP) *.mli *.ml > .depend
