@@ -5,13 +5,21 @@ let initrand = fun dimsize border ->
   Random.self_init ();
   Array.init dimsize (fun _ -> Random.float (2. *. border) -. border)
 
+let global = ref false
 
+let settotrue = fun _ ->
+  global := true;
+  Printf.printf("[DE] Signal reçu : choix du meilleur en cours\n%!");
+  Sys.set_signal Sys.sigint Sys.Signal_default
+      
 let de = fun population nbitermax differentialweight crossoverproba func ->
   Random.self_init ();
-  let dimensionsize = Array.length population.(0) in
-  let nbiter = ref 0 in
   let populationsize = Array.length population in
-  while (!nbiter < nbitermax) do
+  let dimensionsize = Array.length population.(0) in
+  Sys.set_signal Sys.sigint (Sys.Signal_handle settotrue);
+  let nbiter = ref 0 in
+  while (!nbiter < nbitermax) && not !global do
+    Printf.printf("[DE] Nouvelle génération !\n%!");
     for n=0 to (populationsize - 1) do
       let x = Random.int (Array.length population) in
       let a = ref (Random.int (Array.length population)) in
