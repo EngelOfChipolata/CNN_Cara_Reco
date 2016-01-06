@@ -14,7 +14,7 @@ let learnFromFile = fun sample file iter differentialw crossov ->
 
     
 let makeTuple = fun img corresp dir ->
-  let imgPath = StringLabels.concat "" [dir ; "/" ;(string_of_int img) ; "pgm"] in
+  let imgPath = StringLabels.concat "" [dir ; "/" ;(string_of_int img) ; ".pgm"] in
   let imgI = Importscans.importimg imgPath 28 28 in
   let tup = (imgI, !corresp) in
   tup
