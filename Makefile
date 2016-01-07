@@ -1,26 +1,27 @@
 SOURCES = importscans.ml convolutional.ml pooling.ml createnetwork.ml cartoonnetwork.ml debug.ml computevision.ml neteval.ml transform.ml de.ml save.ml learn.ml main.ml
 TARGET = CNN
 OCAMLC = ocamlc
+OCAMLOPT = ocamlopt
 DEP = ocamldep
-OBJS = $(SOURCES:.ml=.cmo)
+OBJS = $(SOURCES:.ml=.cmx)
 
 all: .depend byte
 
 byte: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(OCAMLC) -o $@ $^
+	$(OCAMLOPT) -o $@ $^
 
 %.cmi: %.mli
-	$(OCAMLC) $<
+	$(OCAMLOPT) $<
 
-%.cmo: %.ml
-	$(OCAMLC) -c $<
+%.cmx: %.ml
+	$(OCAMLOPT) -c $<
 
 .PHONY: clean
 
 clean:
-	rm -f *.cm[io] *~ *.o
+	rm -f *.cm[iox] *~ *.o
 
 .depend: $(SOURCES)
 	$(DEP) *.mli *.ml > .depend
