@@ -1,5 +1,6 @@
-+ évolution differentielle générale, pouvant être appliquée sur n'importe quelle fonction.   -> Guilhem
-+ fonction d'évalution de la solution sur un échantillon de test : g(W) = sum[0.5*(resultat - attendu)**2]   (somme sur l'échantillonde test)
-+ fonction permettant de transformer les poids de la forme "enregistrement" à la forme "tableau en ligne"
-+ fonction inverse de la précédente
++ trouver le bug ^^
++ faire une meilleure interface CLI
++ tester avec differents parametres pour le DE
++ un autre algo ?
++ se pendre ?
 
