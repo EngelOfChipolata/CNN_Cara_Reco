@@ -5,7 +5,7 @@ type intermediateoutput = float array
 let initReseau = fun size n nbN ->
   Random.self_init ();
 
-  let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init size ( fun k -> Array.init size ( fun l -> (float_of_int (Random.int 2)))))) in
+  let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init size ( fun k -> Array.init size ( fun l -> (Random.float  2.) -.1. )))) in
   res ;;
     
 let sigmoide = fun x ->
