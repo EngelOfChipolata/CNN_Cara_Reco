@@ -15,10 +15,11 @@ let evalNet = fun funcompute imgCoupleAr net ->
 
 let success = fun funcompute imgCoupleAr net ->
   let amiright = fun imgCouple ->
-    let img, res = imgCouple in
-    if (funcompute img net == res)
+    let img, sol = imgCouple in
+    let res = funcompute img net in
+    if (Computevision.whatisit res == sol)
     then 1
     else 0
   in
   let note = Array.fold_left (fun acc elt -> (amiright elt) + acc) 0 imgCoupleAr in
-  float (note) /. float (Array.length imgCoupleAr)  *. 100.
+  float (note) /. float (Array.length imgCoupleAr)  *. (-. 100.)
