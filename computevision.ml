@@ -26,3 +26,19 @@ let createNetwork = fun info ->
   let finalw = Cartoonnetwork.initReseau info.nbInterNeu info.nbEndNeu in
   let network = {filterImgs=filterimgs; inter_weights=interw; final_weights=finalw} in
   network
+    
+let whatisit = fun finalvalues ->
+  let getimax = fun tab ->
+    let i = ref 0 in
+    let max = ref (-. infinity) in
+    let savei = fun index elt ->
+      if (elt > !max)
+      then begin
+        i := index;
+        max := elt;
+      end
+    in
+    Array.iteri savei tab;
+    !i
+  in
+  getimax finalvalues
