@@ -28,6 +28,7 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
   Random.self_init (); (*Initialisation du générateur aléatoire*)
   let populationsize = Array.length population in (*On récupère la taille de la population et la dimension de chaque individu*)
   let dimensionsize = Array.length population.(0) in
+  let scores = Array.init populationsize (fun _ -> None) in (* On range les scores de la population ici pour éviter de les recalculer *)
   Sys.set_signal Sys.sigint (Sys.Signal_handle settotrue); (*Ci, ctrl C est préssé à partir de maintenant on appelle la fonction settotrue*)
   let nbiter = ref 0 in						(*On initialise le nombre d'itérations à 0*)
   while (!nbiter < nbitermax) && not !global do         (*Critère d'arrêt à préciser :Tant qu'on atteint pas le nombre d'itération maximal ou que ctrl C n'a pas été préssé*)
@@ -63,14 +64,23 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
       done;
 
       let scorecand = func candidate in (* On calcule le score du candidat *)
-      let scoreori = func original in   (* Ainsi que celui de l'orginal *)
-      
+      let scoreori =
+        match scores.(x) with
+          None -> begin
+            let myscore = func original in
+            scores.(x) <- Some myscore;
+            myscore
+          end
+        | Some score -> score in(* Ainsi que celui de l'orginal *)
       if (scorecand < scoreori) (*Si le score du candidat est meilleur*)
-      then population.(x) <- candidate (*On remplace l'orginal par le candidat dans la population*)
+      then begin
+        population.(x) <- candidate; (*On remplace l'orginal par le candidat dans la population*)
+        scores.(x) <- Some scorecand
+      end
     done;
     incr nbiter (*On augmente le nombre d'itérations*)
   done;
-
+  
   let bestfit = ref (population.(0)) in (* Enfin on sélectionne l'individu qui a le meilleur score parmis toute la population*)
   let bestfitvalue = ref (func !bestfit) in
   for i=1 to (populationsize - 1) do
@@ -79,4 +89,5 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
     then begin bestfit := population.(i); bestfitvalue := testfit end;
   done;
   (!bestfit, population)  (*On renvoie le meilleur individu et la population finale (si on veut continuer le test sur cette population par la suite *)
-  
+    
+    
