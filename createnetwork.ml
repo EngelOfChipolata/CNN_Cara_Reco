@@ -35,16 +35,3 @@ let creaNeu = fun fctseuil fctsomme res imgs->
  
 let computeNeurons = creaNeu sigmoide funSum
 
-(* Test 
-
-let nbN = 200 in
-let imgs = Array.init 20 ( fun i -> Array.init 15 ( fun j -> Array.init 15 ( fun l -> Random.int 255))) in
-let res = initReseau imgs nbN in
-
-let s = ref (Array.init 200 ( fun _ -> 0. )) in
-for i = 0 to 100 do
- s := creaNeu imgs res sigmoide funSum;
-done;
-Printf.printf "Fini\n";;
-Array.iter (fun i -> Printf.printf "%g\n" i) valNeu;;*)
-
