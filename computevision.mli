@@ -12,3 +12,4 @@ type info_network = {
 }
 val computeImg : Importscans.image -> neuronalNetwork -> float array
 val createNetwork : info_network -> neuronalNetwork
+val whatisit : float array -> int

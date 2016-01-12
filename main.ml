@@ -27,7 +27,7 @@ let use_net= fun () ->
   
   let net = Transform.tabToSave population_init.(0) info in
   
-  let img = Importscans.importimg Sys.argv.(2) 28 28 in
+  let img = Importscans.importimg Sys.argv.(2) 28 in
   let res = Computevision.computeImg img net in
   Array.iter (fun elt -> Printf.printf "%f\n" elt) res;;
 

@@ -1,6 +1,7 @@
-let learnFromNothing = fun sample infonn popsize iter differentialw crossov ->
+let learnFromNothing = fun sample infonn popsize iter differentialw crossov->
   let evalfun = fun net -> Neteval.evalNet Computevision.computeImg sample (Transform.tabToSave net infonn) in
   let population_init = Transform.createInlinePopulation infonn popsize in
+  Printf.printf "On part de loin le score est  : %f\n%!" (evalfun population_init.(0));
   let bestbrain, pop_finale = De.de population_init iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
@@ -17,7 +18,7 @@ let learnFromFile = fun sample file iter differentialw crossov ->
 
 let makeTuple = fun img corresp dir ->
   let imgPath = StringLabels.concat "" [dir ; "/" ;(string_of_int img) ; ".pgm"] in
-  let imgI = Importscans.importimg imgPath 28 28 in
+  let imgI = Importscans.importimg imgPath 28 in
   let tup = (imgI, !corresp) in
   tup
 
@@ -63,7 +64,7 @@ let resetAndSave = fun filename loto nb ->
 
 let recup = fun img corresp nb loto ->
   let i = img mod nb in
-  let dir = StringLabels.concat "" ["Caracteres/" ; (string_of_int !corresp)] in
+  let dir = "Caracteres/" ^ (string_of_int !corresp) in
   let nbImgs = Array.length (Sys.readdir dir) in
 
   let imgSort = random loto nbImgs in
@@ -72,7 +73,7 @@ let recup = fun img corresp nb loto ->
 
   if i = (nb -1 ) then
     begin
-      let filename = StringLabels.concat "" ["Save/Tirage/" ; (string_of_int !corresp)] in
+      let filename = "Save/Tirage/" ^ (string_of_int !corresp) in
       resetAndSave filename loto nb;
       corresp := !corresp + 1
     end;

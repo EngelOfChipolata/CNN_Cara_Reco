@@ -1,5 +1,7 @@
-val saveToTab : Computevision.neuronalNetwork -> float array
+type inlineWeights = float array
+
+val saveToTab : Computevision.neuronalNetwork -> inlineWeights
 val tabToSave :
-  float array -> Computevision.info_network -> Computevision.neuronalNetwork
+  inlineWeights -> Computevision.info_network -> Computevision.neuronalNetwork
 val createInlinePopulation :
-  Computevision.info_network -> int -> float array array
+  Computevision.info_network -> int -> inlineWeights array
