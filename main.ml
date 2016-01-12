@@ -1,3 +1,5 @@
+(* utilisation : ./CNN pour lancer l'apprentissage, ./CNN population_file caractere.pgm pour sortir le résultat. Dans ce dernier cas, le premier individu est pris *)
+
 let darwin = fun () ->
   let inf = {Computevision.nbFil=4; Computevision.sizeFil=3; Computevision.nbInterNeu=50; Computevision.sizePooImg=12; Computevision.nbEndNeu=10} in
 
@@ -37,4 +39,3 @@ let () =
     use_net ()
   else
     darwin ();
-  ignore 3

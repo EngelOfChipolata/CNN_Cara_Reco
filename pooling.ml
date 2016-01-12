@@ -1,3 +1,4 @@
+(* divise la taille d'une image par 2 grace à une fonction de pooling *)
 let poolimg = fun poolFct inputImg ->
   let height = Array.length inputImg in
   let width = Array.length inputImg.(0) in
@@ -16,9 +17,7 @@ let poolimg = fun poolFct inputImg ->
       outputImg;
     end
 
-let sumPooling = fun pixs ->
-  List.fold_left ( + ) 0 pixs
-
+(* renvoie le max de la liste en paramètres *)
 let maxPooling = fun pixs ->
   match pixs with
     x :: xs -> List.fold_left max x xs
@@ -26,8 +25,11 @@ let maxPooling = fun pixs ->
 
 let basicPool = poolimg maxPooling
 
+(* pool un ensemble d'images *)
 let poolConvImg = fun poolImg layerSet ->
-  let outputConvImg = Array.init (Array.length layerSet) (fun i -> poolImg layerSet.(i)) in
+  (*let outputConvImg = Array.init (Array.length layerSet) (fun i -> poolImg layerSet.(i)) in *)
+  let outputConvImg = Array.map (fun elt -> poolImg elt) layerSet in
   outputConvImg
 
+(* le pooling que l'on va utiliser *)
 let maxPoolConvImg = poolConvImg (poolimg maxPooling)
