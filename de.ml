@@ -59,7 +59,7 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
 
       for dim = 0 to (dimensionsize - 1) do	(*Pour chaque dimension*)
         if (Random.int dimensionsize == r) || (Random.float 1. < crossoverproba)	(*Si cette dimension est l'élue ou si la crossoverproba est vérifiée*)
-        then candidate.(dim) <- (*clamp ( *) indi1.(dim) +. differentialweight *. (indi2.(dim)-. indi3.(dim))) (*(-.1.) 1. *) (* On calcule la nouvelle valeur du candidat pour cette dimension (le clamp est commenté pour rester général) *)
+        then candidate.(dim) <- (*clamp ( *) indi1.(dim) +. differentialweight *. (indi2.(dim)-. indi3.(dim)) (*) (-.1.) 1. *) (* On calcule la nouvelle valeur du candidat pour cette dimension (le clamp est commenté pour rester général) *)
       done;
 
       let scorecand = func candidate in (* On calcule le score du candidat *)
