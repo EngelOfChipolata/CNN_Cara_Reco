@@ -1,6 +1,7 @@
 let learnFromNothing = fun sample infonn popsize iter differentialw crossov->
-  let evalfun = fun net -> Neteval.success Computevision.computeImg sample (Transform.tabToSave net infonn) in
+  let evalfun = fun net -> Neteval.evalNet Computevision.computeImg sample (Transform.tabToSave net infonn) in
   let population_init = Transform.createInlinePopulation infonn popsize in
+  Printf.printf "On part de loin le score est  : %f\n%!" (evalfun population_init.(0));
   let bestbrain, pop_finale = De.de population_init iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
