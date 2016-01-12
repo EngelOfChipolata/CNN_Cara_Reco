@@ -1,7 +1,9 @@
+(* sauvegarde un tableau de float dans un fichier *)
 let save_vector = fun file_channel vector ->
   Array.iter (fun elt -> Printf.fprintf file_channel "%f\n" elt) vector;
   Printf.fprintf file_channel "\n"
 
+(* sauvegarde une population de réseau (format inline) *)
 let save_pop = fun filename info pop ->
   let channel = open_out filename in
   Printf.fprintf channel "%d\n%d\n%d\n%d\n%d\n\n" info.Computevision.nbFil info.Computevision.sizeFil info.Computevision.nbInterNeu info.Computevision.sizePooImg info.Computevision.nbEndNeu;
@@ -9,16 +11,19 @@ let save_pop = fun filename info pop ->
   Array.iter (fun ind -> save_vector channel ind) pop;
   close_out channel
 
+(* lis un float depuis le fichier *)
 let get_fvalue = fun channel ->
   let st_wei = input_line channel in
   let wei = float_of_string st_wei in
   wei
 
+(* lis nbw float dans le fichier *)
 let get_ind = fun channel nbw ->
   let ind = Array.init nbw (fun _-> get_fvalue channel) in
   let _ = input_line channel in
   ind
 
+(* ouvre un fichier de population, et renvoie les infos nécessaires et la population de réseau (format inline) *)
 let open_pop = fun filename ->
   let channel = open_in filename in
   (* filter_nb, filter_size, nb_neu_inter, pooled_size, nbNeurFin *)

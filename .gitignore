@@ -1,6 +1,9 @@
 *~
 *.cmi
 *.cmo
+*.o
+*.cmx
 *.pgm
 Caracteres/
+Save/
 .gitignore
