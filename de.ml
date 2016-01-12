@@ -50,7 +50,10 @@ let de = fun population nbitermax differentialweight crossoverproba func ->
         then candidate.(dim) <- indi1.(dim) +. differentialweight *. (indi2.(dim)-. indi3.(dim))
       done;
       (*Printf.printf "candi : %f,%f\torig : %f,%f\tcandifit %f\t origifit %f\n" candidate.(0) candidate.(1) original.(0) original.(1) (func candidate) (func original);*)
-      if (func candidate < func original)
+      let scorecand = func candidate in
+      let scoreori = func original in
+      Printf.printf "score candi : %f\t score original : %f\n%!" scorecand scoreori;
+      if (scorecand < scoreori)
       then population.(x) <- candidate
     done;
     incr nbiter

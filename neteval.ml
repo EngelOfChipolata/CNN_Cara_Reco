@@ -6,7 +6,7 @@ let evalNet = fun funcompute imgCoupleAr net ->
     res.(sol) <- res.(sol)-.1.;
     let diff = Array.map (fun i -> i*.i) res in
     let normAtSquare = Array.fold_left ( +. ) 0. diff in
-    Printf.printf "norm : %f\tsol : %d\n%!" normAtSquare sol;
+    (*Printf.printf "norm : %f\tsol : %d\n%!" normAtSquare sol;*)
     normAtSquare in
   let ress = Array.map (fun elt -> evalfitness elt) imgCoupleAr in
   (* crée un array contenant tout les résultats *)
