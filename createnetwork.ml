@@ -2,15 +2,18 @@ type intermediateweights = float array array array array
 
 type intermediateoutput = float array
 
+   (* initReseau: n = nb de neuronnes intermédiaires  nbN nombre de neuronnes en sortie *)   
 let initReseau = fun size n nbN ->
   Random.self_init ();
 
   let res = Array.init nbN ( fun i -> Array.init n ( fun j -> Array.init size ( fun k -> Array.init size ( fun l -> (Random.float  2.) -.1. )))) in
   res ;;
-    
+
+(*fonction sigmoide qui "lisse" le résultat *)
 let sigmoide = fun x ->
   1./.(1.+.exp(-.(x)));;
 
+(* a : neuronne de sortie sur lequel on somme ses connexions*)
 let funSum = fun a imgs res ->
   let rn = Array.length res.(0) - 1 in
   let ri = Array.length res.(0).(0) - 1 in
@@ -26,25 +29,15 @@ let funSum = fun a imgs res ->
   done;
   !s;;
 
+
+(* renvoi un tableau avec les valeurs des poids des neurones  *)
 let creaNeu = fun fctseuil fctsomme res imgs->
   (* Longueur du reseau de neuronnes*)
   let rm = Array.length res in     (* nombre de neurones en sortie *)
   (* val de sortie des neuronnes *)
   let valNeu = Array.init rm (fun i -> fctseuil (fctsomme i imgs res)) in
   valNeu;;
- 
+
+(* application partielle de la fonction précédente  *)
 let computeNeurons = creaNeu sigmoide funSum
-
-(* Test 
-
-let nbN = 200 in
-let imgs = Array.init 20 ( fun i -> Array.init 15 ( fun j -> Array.init 15 ( fun l -> Random.int 255))) in
-let res = initReseau imgs nbN in
-
-let s = ref (Array.init 200 ( fun _ -> 0. )) in
-for i = 0 to 100 do
- s := creaNeu imgs res sigmoide funSum;
-done;
-Printf.printf "Fini\n";;
-Array.iter (fun i -> Printf.printf "%g\n" i) valNeu;;*)
 

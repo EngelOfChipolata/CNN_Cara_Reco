@@ -1,8 +1,10 @@
-let initReseau = fun n nbN ->  (* n = nb de neuronnes intermédiaires  nbN nombre de neuronnes en sortie *)
+(*initReseau: n = nb de neuronnes intermédiaires  nbN nombre de neuronnes en sortie *)
+let initReseau = fun n nbN ->
   Random.self_init ();
   let cartoonRes = Array.init nbN (fun i -> Array.init n ( fun j -> (Random.float 1.)-.0.5)) in
   cartoonRes ;;
-    
+
+(*fonction sigmoide qui "lisse" le résultat *)   
 let sigmoide = fun x ->
   1./.(1.+.exp(-.(x)));;
 
@@ -16,6 +18,8 @@ let funSum = fun a intRes cartoonRes -> (* a : neuronne de sortie sur lequel on 
   done;
   !s;;
 
+
+(* renvoi un tableau avec les valeurs des poids des neurones  *)
 let creaNeu = fun fctSeuil fctSomme cartoonRes intRes ->
   (* Longueur du reseau de neuronnes*)
   let rm = Array.length cartoonRes in     (* nombre de neurones en sortie *)
@@ -23,18 +27,6 @@ let creaNeu = fun fctSeuil fctSomme cartoonRes intRes ->
   let valNeu = Array.init rm (fun i -> fctSeuil (fctSomme i intRes cartoonRes)) in
   valNeu;;
 
+(* application partielle de la fonction précédente  *)
 let computeNeurons = creaNeu sigmoide funSum
-
-(* Test 
-
-let nbN = 10 in
-let intRes = Array.init 200 ( fun i -> Random.float 1.) in
-let res = initReseau intRes nbN in
-
-let s = ref (Array.init 10 ( fun _ -> 0. )) in
-
-for i = 0 to 100 do
- s := creaNeu intRes res sigmoide funSum;
-done;
-Printf.printf "Fini\n";;*)
 
