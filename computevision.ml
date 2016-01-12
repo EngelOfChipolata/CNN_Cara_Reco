@@ -18,7 +18,9 @@ let computeImg = fun img network ->
  (* Debug.image_factory "image_test/teteste" imgsPooled;*)
   let interValues = Createnetwork.computeNeurons network.inter_weights imgsPooled in
   let finalValues = Cartoonnetwork.computeNeurons network.final_weights interValues in
-  finalValues
+  let sum = Array.fold_left (+.) 0. finalValues in
+  let final = Array.map (fun i-> i /. sum ) finalValues in
+  final
 
 let createNetwork = fun info ->
   let filterimgs = Convolutional.randomfilterfactory info.sizeFil info.nbFil in
