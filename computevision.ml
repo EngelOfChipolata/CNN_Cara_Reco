@@ -17,7 +17,8 @@ let computeImg = fun img network ->
   let convImgs = Convolutional.convoFactory img network.filterImgs in
   let imgsPooled = Pooling.maxPoolConvImg convImgs in
   let interValues = Createnetwork.computeNeurons network.inter_weights imgsPooled in
-  let finalValues = Cartoonnetwork.computeNeurons network.final_weights interValues in
+  (* let finalValues = Cartoonnetwork.computeNeurons network.final_weights interValues in *)
+  let finalValues = Cartoonnetwork.softmax network.final_weights interValues in
   let sum = Array.fold_left (+.) 0. finalValues in
   let final = Array.map (fun i-> i /. sum ) finalValues in
   final

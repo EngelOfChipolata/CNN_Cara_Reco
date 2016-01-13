@@ -9,6 +9,9 @@ let sigmoide = fun x ->
   1. /. (1.+.exp (-.x/. 0.4));;
 (*2. /. (1. +. exp(-2. *. x)) -. 1.;;*)
 
+let identity = fun x ->
+  x;;
+
 let funSum = fun a intRes cartoonRes -> (* a : neuronne de sortie sur lequel on somme ses connexions*)
                                         (*, intRes neuronnes intermédiares cartoonRes neuronnes de sortie*)
   let rn = Array.length intRes - 1 in
@@ -31,3 +34,10 @@ let creaNeu = fun fctSeuil fctSomme cartoonRes intRes ->
 (* application partielle de la fonction précédente  *)
 let computeNeurons = creaNeu sigmoide funSum
 
+let softmax = fun cartoonRes intRes ->
+  let sumed = creaNeu identity funSum cartoonRes intRes in
+  let exps = Array.map (fun x-> exp(x)) sumed in
+  let sm_sum = Array.fold_left (+.) 0. exps in
+  let values = Array.map (fun x-> x /. sm_sum) exps in
+  values
+  
