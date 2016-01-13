@@ -6,7 +6,7 @@ let initReseau = fun n nbN ->
 
 (*fonction sigmoide qui "lisse" le résultat *)   
 let sigmoide = fun x ->
-  1./.(1.+.exp(-.(x)));;
+2. /. (1. +. exp(-2. *. x)) -. 1.;;
 
 let funSum = fun a intRes cartoonRes -> (* a : neuronne de sortie sur lequel on somme ses connexions*)
                                         (*, intRes neuronnes intermédiares cartoonRes neuronnes de sortie*)

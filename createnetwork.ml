@@ -11,7 +11,7 @@ let initReseau = fun size n nbN ->
 
 (*fonction sigmoide qui "lisse" le résultat *)
 let sigmoide = fun x ->
-  1./.(1.+.exp(-.(x)));;
+  2. /. (1. +. exp(-2. *. x)) -. 1.;;
 
 (* a : neuronne de sortie sur lequel on somme ses connexions*)
 let funSum = fun a imgs res ->
