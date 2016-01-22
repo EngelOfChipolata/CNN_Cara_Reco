@@ -1,20 +1,14 @@
 (* divise la taille d'une image par 2 grace à une fonction de pooling *)
 let poolimg = fun poolFct inputImg ->
-  let height = Array.length inputImg in
-  let width = Array.length inputImg.(0) in
-  if height < 2 && width < 2    (* si l'image est trop petite, on la retourne directement *)
+  let size = Array.length inputImg in
+  if size < 2    (* si l'image est trop petite, on la retourne directement *)
   then
     inputImg
   else
     begin
-    let outputImg = Array.make_matrix (height/2) (width/2) 0. in    
-    for i = 0 to height/2 - 1 do
-      for j = 0 to width/2 - 1 do
-        let pixToPool = [inputImg.(2*i).(2*j) ; inputImg.(2*i+1).(2*j) ; inputImg.(2*i).(2*j+1) ; inputImg.(2*i+1).(2*j+1)] in
-        outputImg.(i).(j) <- poolFct pixToPool;
-      done
-    done;
-      outputImg;
+    let sizePooled = size/2 in
+    let outputImg = Array.init sizePooled (fun i-> Array.init sizePooled (fun j-> poolFct [inputImg.(2*i).(2*j) ; inputImg.(2*i+1).(2*j) ; inputImg.(2*i).(2*j+1) ; inputImg.(2*i+1).(2*j+1)]  ) ) in
+    outputImg;
     end
 
 (* renvoie le max de la liste en paramètres *)
