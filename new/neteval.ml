@@ -4,10 +4,7 @@ let evalNet = fun funcompute imgCoupleAr net ->
   (* imgCouple est un tuple (img, sol) ou sol est le chiffre solution (0->9) *)
   let evalfitness = fun imgCouple ->
     let img, sol = imgCouple in
-    let res = match (funcompute img net) with
-                  LineValues res -> res
-                | Imgs _ -> failwith "[ERROR] evalNet ne peut évaluer une image."
-     in
+    let res = funcompute img net in
     res.(sol) <- res.(sol)-.1.;
     let diff = Array.map (fun i -> i*.i) res in
     let normAtSquare = Array.fold_left ( +. ) 0. diff in
@@ -21,10 +18,7 @@ let evalNet = fun funcompute imgCoupleAr net ->
 let success = fun funcompute imgCoupleAr net ->
   let amiright = fun imgCouple ->
     let img, sol = imgCouple in
-    let res = match (funcompute img net) with
-                  LineValues res -> res
-                | Imgs _ -> failwith "[ERROR] evalNet ne peut évaluer une image."
-     in
+    let res = funcompute img net in
     if (Computevision.whatisit res == sol)
     then 1
     else 0
