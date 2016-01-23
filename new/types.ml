@@ -8,8 +8,7 @@ type tools =
   | ImgsToLine of float array array array array
 (*  | ImgsToLineFinal of float array array array array   TODO (OU PAS) : faire truc correspondant dans createnetwork.ml*)
   | LineToLine of float array array
-  | LineToLineFinal of float array array
-  | Unknow     of string;;
+  | LineToLineFinal of float array array;;
 
 type arg_network_comp =
     Fil  of int * int (*   (nbFiltres, sizeFiltres)  *)
