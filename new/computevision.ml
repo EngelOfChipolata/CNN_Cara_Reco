@@ -2,7 +2,7 @@ open Types
 (* computeImg calcule le vecteur final en prenant en paramètres l'image et le réseau de neurones *)
 
 
-let computeVision = fun img network ->
+let computeTools = fun img network ->
   let rec applyTool = fun input tool ->
     match (tool, input) with
       (FilterImgs filters, Imgs img) -> Imgs (Convolutional.convoFactory img filters)
@@ -13,6 +13,11 @@ let computeVision = fun img network ->
     | (_,_) -> failwith "Arguments incompatibles\n"
   in
   List.fold_left applyTool img network
+
+let computeVision = fun img network ->
+  match (computeTools img network) with
+      LineValues line -> line
+    | Imgs _ -> failwith "[ERROR] Imgs reçu au lieu de LineValues"
 
 
 (* retourne le nombre associé au vecteur résultat *)
