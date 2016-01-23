@@ -1,4 +1,4 @@
-SOURCES = types.ml activationFcts.ml convolutional.ml pooling.ml createnetwork.ml cmpItoL.ml cmpLtoL.ml importscans.ml computevision.ml neteval.ml transform.ml main.ml
+SOURCES = types.ml activationFcts.ml convolutional.ml pooling.ml createnetwork.ml cmpItoL.ml cmpLtoL.ml importscans.ml computevision.ml neteval.ml transform.ml save.ml main.ml
 TARGET = CNN
 OCAMLC = ocamlc
 OCAMLOPT = ocamlopt
