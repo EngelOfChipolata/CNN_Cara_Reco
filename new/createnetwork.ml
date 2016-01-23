@@ -46,6 +46,13 @@ let createNetwork = fun infos base_size ->
                                                              let newNat = LineNAT (nbneus) in
                                                              (newNat, net)
       
+      | (LineFinal nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> failwith "[ERROR] Cas non pris en compte : LineFinal après un array d'images."
+      
+      | (LineFinal nbneus, LineNAT lenprev ) -> let finalw = LineToLineFinal (generateLineToLine lenprev nbneus) in
+                                                             let net = finalw::thenetwork in
+                                                             let newNat = LineNAT (nbneus) in
+                                                             (newNat, net)
+      
       | (Pool _, LineNAT _  ) -> failwith "[ERROR] Pooling impossible sur un vecteur ligne !"
       | (Fil (_,_), LineNAT _ ) -> failwith "[ERROR] Impossible de convoluer sur un vecteur ligne !"
   in

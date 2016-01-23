@@ -8,7 +8,8 @@ let computeVision = fun img network ->
       (FilterImgs filters, Imgs img) -> Imgs (Convolutional.convoFactory img filters)
     | (Poolfct poolf, Imgs cvImgs) -> poolf cvImgs
     | (ImgsToLine weights, Imgs cvImgs) -> LineValues (CmpItoL.computeImgsToLine weights cvImgs)
-    | (LineToLine weights, LineValues lineVal) -> LineValues (CmpLtoL.computeLinetoEnd weights lineVal)
+    | (LineToLine weights, LineValues lineVal) -> LineValues (CmpLtoL.computeLineToLine weights lineVal)  (* changer fct *)
+    | (LineToLineFinal weights, LineValues lineVal) -> LineValues (CmpLtoL.computeLinetoEnd weights lineVal)
     | (_,_) -> failwith "Arguments incompatibles\n"
   in
   List.fold_left applyTool img network
@@ -30,3 +31,4 @@ let whatisit = fun finalvalues ->
     !i
   in
   getimax finalvalues
+
