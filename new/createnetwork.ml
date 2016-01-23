@@ -30,7 +30,8 @@ let createNetwork = fun infos base_size ->
                                             let newNat = ImgArNAT ( nbImgs*nb, sizeImgs - (size-1)  ) in
                                             (newNat, net)
                                             
-      | (Pool div, ImgArNAT (nbImgs, sizeImgs) ) -> let pool = Unknow "pool" in
+     (* | (Pool div, ImgArNAT (nbImgs, sizeImgs) ) -> let pool = Unknow "pool" in *)
+      | (Pool div, ImgArNAT (nbImgs, sizeImgs) ) -> let pool = Poolfct Pooling.maxPoolConvImg in
                                                           let net = pool::thenetwork in
                                                           let newNat = ImgArNAT ( nbImgs, sizeImgs/div) in
                                                           (newNat, net)

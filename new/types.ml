@@ -1,11 +1,10 @@
 type datas =
     Imgs       of float array array array      (* float nbImgs IMG  |  souvent nbImgs = 1  |  sert pour double convolution*)
-(*  | ConvImgs   of float array array array        float nbImgs IMG *)
   | LineValues of float array;;
   
 type tools =
     FilterImgs of  float array array array (*  float nbFil FILTRE : toutes les imgs en input seront convoluées avec tout les filtres *)
-  | Poolfct    of (float array array array -> float array array array)(* devrait être  ConvImgs -> ConvImgs *)
+  | Poolfct    of (float array array array  -> datas)(* devrait être  Imgs -> Imgs *)
   | ImgsToLine of float array array array array
   | LineToLine of float array array
   | Unknow     of string;;

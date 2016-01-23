@@ -7,12 +7,11 @@ let computeVision = fun img network ->
     match (tool, input) with
       (FilterImgs filters, Imgs img) -> Imgs (Convolutional.convoFactory img filters)
     | (Poolfct poolf, Imgs cvImgs) -> poolf cvImgs
-    | (ImgsToLine weights, Imgs cvImgs) -> CmpItoL.computeImgsToLine weights cvImgs
-    | (LineToLine weights, LineValues lineVal) -> CmpLtoL.computeLineToLine weights lineVal
+    | (ImgsToLine weights, Imgs cvImgs) -> LineValues (CmpItoL.computeImgsToLine weights cvImgs)
+    | (LineToLine weights, LineValues lineVal) -> LineValues (CmpLtoL.computeLineToLine weights lineVal)
     | (_,_) -> failwith "Arguments incompatibles\n"
   in
-  (* List.fold_left applyTool img network *)
-  3
+  List.fold_left applyTool img network
 
 
 (* retourne le nombre associé au vecteur résultat *)
