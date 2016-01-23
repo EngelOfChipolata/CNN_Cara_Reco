@@ -19,3 +19,6 @@ let creaNeu = fun fctSeuil fctSomme cartoonRes intRes ->
 
 (* application partielle de la fonction précédente  *)
 let computeLineToLine = creaNeu ActivationFcts.sigmoide funSum
+
+let computeLinetoEnd = fun weights lineVal ->
+  ActivationFcts.softmax (creaNeu ActivationFcts.identity funSum weights lineVal)

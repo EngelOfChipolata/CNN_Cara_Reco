@@ -4,7 +4,11 @@ let () =
   let net = Createnetwork.createNetwork infos 28 in
   let imgs = Importscans.importimg "../../CNN_Cara_Reco/Caracteres/5/231.pgm" 28 in
   let result = Computevision.computeVision imgs net in
-  (* Array.iter (fun elt -> Printf.printf "%f\n" elt) result; *)
-  Printf.printf "%f\n" result.(0);
-  Printf.printf "coucou !\n"
+  let rere = match result with
+               LineValues line -> line
+             | Imgs _ -> failwith "[ERROR] Imgs reçu au lieu de LineValues"
+             in
+  Array.iter (fun elt -> Printf.printf "%f\n" elt) rere;
+  let sum = Array.fold_left ( +. ) 0. rere in
+  Printf.printf "\nsum = %f\n" sum;;
   
