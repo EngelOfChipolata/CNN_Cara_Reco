@@ -84,5 +84,8 @@ let lineToTools = fun tabini infos ->
   let nat = ImgArNAT (1,28) in
   let (lastnat, truenetwork, tableft) = List.fold_left extractTool (nat, network, tabini) infos in
   List.rev truenetwork
-      
-      
+
+
+let createInlinePopulation = fun info nb ->
+  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info 28)) in
+  population 
