@@ -1,62 +1,91 @@
-type inlineWeights = float array
+open Types
+let toolsToLine = fun neurNet ->
+  let down1D = fun tab ->
+    let oneDlist = Array.to_list tab in
+    let oneD = Array.concat oneDlist in
+    oneD
+  in
+  let inlinedTools = List.map (fun tool ->
+                match tool with
+                    FilterImgs fils -> down1D (down1D fils)
+                  | ImgsToLine wItoL -> down1D (down1D (down1D wItoL))
+                  | LineToLine ltoL| LineToLineFinal ltoL -> down1D ltoL
+                  | Poolfct fct -> [||] )
+               neurNet
+  in
+  Array.concat inlinedTools
 
 
-(* transforme le réseau de neuronne sous forme enregistrement vers une forme en ligne  *)
-let saveToTab = fun neurNet ->
-  let filterimgs = neurNet.Computevision.filterImgs in
-  let interw = neurNet.Computevision.inter_weights in
-  let finalw = neurNet.Computevision.final_weights in
-  
-  let nbFil = Array.length filterimgs in
-  let filSize = Array.length filterimgs.(0) in
 
-  let nbNeurInt = Array.length interw in
-  let imgSize = Array.length interw.(0).(0) in
+let getImage = fun tab size->
+  Array.init size (fun i -> (Array.sub tab (i*size) size))
 
-  let nbNeurFin = Array.length finalw in
-  
-  let tab = Array.make (nbFil * filSize * filSize + nbNeurInt * nbFil * imgSize * imgSize + nbNeurInt * nbNeurFin) 0. in
-  
-  let avancement = ref 0 in
+let getImgTab = fun tab nb size ->
+  let lenImg = size*size in
+  Array.init nb (fun i -> (getImage (Array.sub tab (i*lenImg) lenImg)  size))
+
+let getTabofFils = fun tab nbtot nbfils size ->
+  let lenFil = nbfils*size*size in
+  Array.init nbtot (fun i -> ( getImgTab ( Array.sub tab (i*lenFil) lenFil ) nbfils size ) )
+
+
+
+let lineToTools = fun tabini infos ->
+  let extractTool = fun (prevNat, thenetwork, tab) info ->
+    match info, prevNat with
+        (Fil (nbFils, sizeFils), ImgArNAT (nbImgs, sizeImgs) ) -> 
+                                            let lenConcerned = nbFils*sizeFils*sizeFils in
+                                            let tabFils = Array.sub tab 0 lenConcerned in
+                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+                                            let fils = FilterImgs (getImgTab tabFils nbFils sizeFils) in
+                                            let net = fils::thenetwork in
+                                            let newNat = ImgArNAT ( nbImgs*nbFils, sizeImgs - (sizeFils-1)  ) in
+                                            (newNat, net, tabLeft)               
+                                            
+      | (Pool div, ImgArNAT (nbImgs, sizeImgs) ) ->
+                                            let pool = Poolfct Pooling.maxPoolConvImg in
+                                            let net = pool::thenetwork in
+                                            let newNat = ImgArNAT ( nbImgs, sizeImgs/div) in
+                                            (newNat, net, tab)
+                                             
+                                                   
+      | (Line nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> 
+                                            let lenConcerned = nbneus* nbImgs*sizeImgs*sizeImgs in
+                                            let tabNeu = Array.sub tab 0 lenConcerned in
+                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+                                            let iToLine = ImgsToLine (getTabofFils tabNeu nbneus nbImgs sizeImgs) in
+                                            let net = iToLine::thenetwork in
+                                            let newNat = LineNAT (nbneus) in
+                                            (newNat, net, tabLeft)
+
+      | (Line nbneus, LineNAT lenprev ) ->
+                                            let lenConcerned = nbneus*lenprev in
+                                            (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
+                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+                                            let lineToLine = LineToLine (Array.init nbneus (fun i -> (Array.sub tab (i*lenprev) lenprev))) in
+                                            let net = lineToLine::thenetwork in
+                                            let newNat = LineNAT (nbneus) in
+                                            (newNat, net, tabLeft)
       
-  let cpyw = fun nb ->
-    tab.(!avancement) <- nb;
-    avancement := !avancement + 1
+      | (LineFinal nbneus, LineNAT lenprev ) ->
+                                            let lenConcerned = nbneus*lenprev in
+                                           (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
+                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+                                            let lineToLine = LineToLineFinal (Array.init nbneus (fun i -> (Array.sub tab (i*lenprev) lenprev))) in
+                                            let net = lineToLine::thenetwork in
+                                            let newNat = LineNAT (nbneus) in
+                                            (newNat, net, tabLeft)
+
+      | (LineFinal nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> failwith "[ERROR] Cas non pris en compte : LineFinal après un array d'images."
+      | (Pool _, LineNAT _  ) -> failwith "[ERROR] Pooling impossible sur un vecteur ligne !"
+      | (Fil (_,_), LineNAT _ ) -> failwith "[ERROR] Impossible de convoluer sur un vecteur ligne !"
   in
+  let network = [] in
+  let nat = ImgArNAT (1,28) in
+  let (lastnat, truenetwork, tableft) = List.fold_left extractTool (nat, network, tabini) infos in
+  List.rev truenetwork
 
-  let cpyw2 = fun t ->
-    Array.iter cpyw t
-  in
-
-  let cpyw3 = fun t ->
-    Array.iter cpyw2 t
-  in
-
-  let cpyw4 = fun t ->
-    Array.iter cpyw3 t
-  in
-
-  Array.iter cpyw3 filterimgs;
-  Array.iter cpyw4 interw;
-  Array.iter cpyw2 finalw;
-  tab;;
-
-
-(* transforme le réseau de neuronne sous forme  en ligneenregistrement vers une forme enregistrement *)
-let tabToSave = fun tab info ->
-  let avancement = ref 0 in
-  let extract = fun _ ->
-    let nb = tab.(!avancement) in
-    avancement := !avancement + 1;
-    nb
-  in
-  let filterimgs = Array.init info.Computevision.nbFil ( fun i -> Array.init info.Computevision.sizeFil ( fun j -> Array.init info.Computevision.sizeFil extract)) in
-  let interw = Array.init info.Computevision.nbInterNeu ( fun i -> Array.init info.Computevision.nbFil ( fun j -> Array.init info.Computevision.sizePooImg ( fun k -> Array.init info.Computevision.sizePooImg  extract))) in
-  let finalw = Array.init info.Computevision.nbEndNeu ( fun i -> Array.init info.Computevision.nbInterNeu extract) in
-
-  let network = {Computevision.filterImgs=filterimgs; Computevision.inter_weights=interw; Computevision.final_weights=finalw} in
-  network;;
 
 let createInlinePopulation = fun info nb ->
-  let population = Array.init nb (fun _ -> saveToTab (Computevision.createNetwork info)) in
+  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info 28)) in
   population 

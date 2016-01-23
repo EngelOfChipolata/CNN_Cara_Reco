@@ -1,3 +1,4 @@
+open Types
 (* évalue un reseau sur un ensemble d'images : renvoie la norme quadratique de la différence entre le résultat d'un test et le vecteur attendu *)
 let evalNet = fun funcompute imgCoupleAr net ->
   (* imgCouple est un tuple (img, sol) ou sol est le chiffre solution (0->9) *)
