@@ -52,7 +52,7 @@ let getTabofFils = fun tab nbtot nbfils size ->
   res
 
 
-let lineToTools = fun tabini infos ->
+let lineToTools = fun tabini infos base_size->
   let extractTool = fun (prevNat, thenetwork, tab) info ->
     match info, prevNat with
         (Fil (nbFils, sizeFils), ImgArNAT (nbImgs, sizeImgs) ) -> 
@@ -107,11 +107,11 @@ let lineToTools = fun tabini infos ->
       | (Fil (_,_), LineNAT _ ) -> failwith "[ERROR] Impossible de convoluer sur un vecteur ligne !"
   in
   let network = [] in
-  let nat = ImgArNAT (1,28) in
+  let nat = ImgArNAT (1,base_size) in
   let (lastnat, truenetwork, tableft) = List.fold_left extractTool (nat, network, tabini) infos in
   List.rev truenetwork
 
 
-let createInlinePopulation = fun info nb ->
-  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info 28)) in
+let createInlinePopulation = fun info nb base_size->
+  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info base_size)) in
   population 

@@ -1,14 +1,15 @@
-let learnFromNothing = fun sample infonn popsize iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population aléatoire *)
-  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net infonn) in
+let learnFromNothing = fun (sample, base_size) infonn popsize iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population aléatoire *)
+  (*let base_size = Array.length sample.(0) in*)
+  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net infonn base_size) in
   (*let evalfun = fun net -> Neteval.success Computevision.computeVision sample (Transform.lineToTools net infonn) in*)
-  let population_init = Transform.createInlinePopulation infonn popsize in
+  let population_init = Transform.createInlinePopulation infonn popsize base_size in
   Printf.printf "On part de loin le score est  : %f\n%!" (evalfun population_init.(0));
   let bestbrain, pop_finale = De.de population_init iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
-let learnFromFile = fun sample file iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population chargée depuis un fichier *)
+let learnFromFile = fun (sample, base_size) file iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population chargée depuis un fichier *)
   let info, pop = Save.open_pop file in
-  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net info) in
+  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net info base_size) in
   let bestbrain, pop_finale = De.de pop iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
@@ -17,7 +18,7 @@ let learnFromFile = fun sample file iter differentialw crossov -> (*Fonction qui
 (* fonction qui crée un tuple comprenant une image et sa correspondance*)
 let makeTuple = fun img corresp dir ->
   let imgPath = StringLabels.concat "" [dir ; "/" ;(string_of_int img) ; ".pgm"] in
-  let imgI = Importscans.importimg imgPath 28 in
+  let imgI = Importscans.importimg imgPath in
   let tup = (imgI, !corresp) in
   tup
 
@@ -93,5 +94,6 @@ let getSample = fun nb ->
   let loto = Array.make 1500 1 in
   let tab = Array.init nb ( fun i -> recup i corresp nbRepart loto ) in
   tab
+
 
 
