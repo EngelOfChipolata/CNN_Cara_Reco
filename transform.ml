@@ -1,26 +1,29 @@
 open Types
+
+let down1D = fun tab ->
+  let oneDlist = Array.to_list tab in
+  let oneD = Array.concat oneDlist in
+  oneD
+
+
+let iToL = fun wItoL ->
+  let weigths = Array.map (fun (weiAr, _) -> weiAr) wItoL in
+  let biais = Array.map (fun (_,biais) -> biais) wItoL in
+  let weigthsline = down1D(down1D (down1D weigths)) in
+  let weiandBiais = Array.concat [weigthsline;biais] in
+  weiandBiais
+
+
+let lineToL = fun wLToL ->
+  let biais = Array.map (fun (_,biais) -> biais) wLToL in
+  let weigths = Array.map (fun (wei,_) -> wei) wLToL in
+  let weigths = down1D weigths in
+  let weiandBiais = Array.concat [weigths;biais] in
+  weiandBiais
+
+
 let toolsToLine = fun neurNet ->
-  let down1D = fun tab ->
-    let oneDlist = Array.to_list tab in
-    let oneD = Array.concat oneDlist in
-    oneD
-  in
-  
-  let iToL = fun wItoL ->
-    let weigths = Array.map (fun (weiAr, _) -> weiAr) wItoL in
-    let biais = Array.map (fun (_,biais) -> biais) wItoL in
-    let weigthsline = down1D(down1D (down1D weigths)) in
-    let weiandBiais = Array.concat [weigthsline;biais] in
-    weiandBiais
-  in
-  
-  let lineToL = fun wLToL ->
-    let biais = Array.map (fun (_,biais) -> biais) wLToL in
-    let weigths = Array.map (fun (wei,_) -> wei) wLToL in
-    let weigths = down1D weigths in
-    let weiandBiais = Array.concat [weigths;biais] in
-    weiandBiais
-  in
+
   
   let inlinedTools = List.map (fun tool ->
                 match tool with
@@ -44,7 +47,7 @@ let getImgTab = fun tab nb size ->
 
 let getTabofFils = fun tab nbtot nbfils size ->
   let lenFil = nbfils*size*size in
-  let biais = Array.sub tab (nbfils*size*size) nbtot in
+  let biais = Array.sub tab (nbtot*lenFil) nbtot in
   let res = Array.init nbtot (fun i -> (( getImgTab ( Array.sub tab (i*lenFil) lenFil ) nbfils size ),biais.(i)) ) in
   res
 
@@ -69,7 +72,7 @@ let lineToTools = fun tabini infos ->
                                              
                                                    
       | (Line nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> 
-                                            let lenConcerned = nbneus* nbImgs*sizeImgs*sizeImgs in
+                                            let lenConcerned = nbneus*nbImgs*sizeImgs*sizeImgs+nbneus in
                                             let tabNeu = Array.sub tab 0 lenConcerned in
                                             let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
                                             let iToLine = ImgsToLine (getTabofFils tabNeu nbneus nbImgs sizeImgs) in
