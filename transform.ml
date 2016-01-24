@@ -5,11 +5,28 @@ let toolsToLine = fun neurNet ->
     let oneD = Array.concat oneDlist in
     oneD
   in
+  
+  let iToL = fun wItoL ->
+    let weigths = Array.map (fun (weiAr, _) -> weiAr) wItoL in
+    let biais = Array.map (fun (_,biais) -> biais) wItoL in
+    let weigthsline = down1D(down1D (down1D weigths)) in
+    let weiandBiais = Array.concat [weigthsline;biais] in
+    weiandBiais
+  in
+  
+  let lineToL = fun wLToL ->
+    let biais = Array.map (fun (_,biais) -> biais) wLToL in
+    let weigths = Array.map (fun (wei,_) -> wei) wLToL in
+    let weigths = down1D weigths in
+    let weiandBiais = Array.concat [weigths;biais] in
+    weiandBiais
+  in
+  
   let inlinedTools = List.map (fun tool ->
                 match tool with
                     FilterImgs fils -> down1D (down1D fils)
-                  | ImgsToLine wItoL -> down1D (down1D (down1D wItoL))
-                  | LineToLine ltoL| LineToLineFinal ltoL -> down1D ltoL
+                  | ImgsToLine wItoL -> iToL wItoL
+                  | LineToLine ltoL| LineToLineFinal ltoL -> lineToL ltoL
                   | Poolfct fct -> [||] )
                neurNet
   in
@@ -22,12 +39,14 @@ let getImage = fun tab size->
 
 let getImgTab = fun tab nb size ->
   let lenImg = size*size in
-  Array.init nb (fun i -> (getImage (Array.sub tab (i*lenImg) lenImg)  size))
+  let res = Array.init nb (fun i -> (getImage (Array.sub tab (i*lenImg) lenImg)  size)) in
+  res
 
 let getTabofFils = fun tab nbtot nbfils size ->
   let lenFil = nbfils*size*size in
-  Array.init nbtot (fun i -> ( getImgTab ( Array.sub tab (i*lenFil) lenFil ) nbfils size ) )
-
+  let biais = Array.sub tab (nbfils*size*size) nbtot in
+  let res = Array.init nbtot (fun i -> (( getImgTab ( Array.sub tab (i*lenFil) lenFil ) nbfils size ),biais.(i)) ) in
+  res
 
 
 let lineToTools = fun tabini infos ->
@@ -62,7 +81,9 @@ let lineToTools = fun tabini infos ->
                                             let lenConcerned = nbneus*lenprev in
                                             (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
                                             let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let lineToLine = LineToLine (Array.init nbneus (fun i -> (Array.sub tab (i*lenprev) lenprev))) in
+                                            let lineToLine = 
+                                                    let biais = Array.sub tab (nbneus*lenprev) nbneus in
+                                                    LineToLine (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
                                             let net = lineToLine::thenetwork in
                                             let newNat = LineNAT (nbneus) in
                                             (newNat, net, tabLeft)
@@ -71,7 +92,9 @@ let lineToTools = fun tabini infos ->
                                             let lenConcerned = nbneus*lenprev in
                                            (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
                                             let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let lineToLine = LineToLineFinal (Array.init nbneus (fun i -> (Array.sub tab (i*lenprev) lenprev))) in
+                                            let lineToLine = 
+                                                    let biais = Array.sub tab (nbneus*lenprev) nbneus in
+                                                    LineToLineFinal (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
                                             let net = lineToLine::thenetwork in
                                             let newNat = LineNAT (nbneus) in
                                             (newNat, net, tabLeft)

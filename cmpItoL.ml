@@ -1,24 +1,28 @@
 
-let funSum = fun a imgs res ->
-  let rn = Array.length res.(0) - 1 in
-  let ri = Array.length res.(0).(0) - 1 in
-  let rj = Array.length res.(0).(0).(0) - 1 in
+let funSum = fun imgs (isToNeuW, bias) ->
+  let nbImgsNeu = Array.length isToNeuW in
+  let nbImgs = Array.length imgs in
+  if nbImgs != nbImgsNeu then failwith "dimension incohérente\n";
+  let rx = Array.length isToNeuW.(0) - 1 in
+  let ry = Array.length isToNeuW.(0).(0) - 1 in
   
-  let s = ref 0. in
-  for b = 0 to rn do      (* n° layers *)
-    for c = 0 to ri do    (* n° lignes layer *)
-      for d = 0 to rj do  (* n° colnnes layer *)
-        s:= !s +. imgs.(b).(c).(d) *. res.(a).(b).(c).(d)
+  let acc = ref 0. in
+  
+  for iImgs = 0 to nbImgs-1 do      (* n° layers *)
+    for x = 0 to rx do    (* n° lignes layer *)
+      for y = 0 to ry do  (* n° colnnes layer *)
+        acc:= !acc +. imgs.(iImgs).(x).(y) *. isToNeuW.(iImgs).(x).(y)
       done
     done
   done;
-  !s;;
+  acc:= !acc +. bias;
+  !acc;;
 
-let creaNeu = fun fctseuil fctsomme res imgs->
+let creaNeu = fun fctseuil fctsomme isToLW imgs->
   (* Longueur du reseau de neuronnes*)
-  let rm = Array.length res in     (* nombre de neurones en sortie *)
+  let rm = Array.length isToLW in     (* nombre de neurones en sortie *)
   (* val de sortie des neuronnes *)
-  let valNeu = Array.init rm (fun i -> fctseuil (fctsomme i imgs res)) in
+  let valNeu = Array.init rm (fun i -> fctseuil (fctsomme imgs isToLW.(i))  ) in
   valNeu;;
 
 let computeImgsToLine = creaNeu ActivationFcts.sigmoide funSum

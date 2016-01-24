@@ -5,10 +5,10 @@ type datas =
 type tools =
     FilterImgs of  float array array array (*  float nbFil FILTRE : toutes les imgs en input seront convoluées avec tout les filtres *)
   | Poolfct    of (float array array array  -> datas)(* devrait être  Imgs -> Imgs *)
-  | ImgsToLine of float array array array array
+  | ImgsToLine of (float array array array * float) array
 (*  | ImgsToLineFinal of float array array array array   TODO (OU PAS) : faire truc correspondant dans createnetwork.ml*)
-  | LineToLine of float array array
-  | LineToLineFinal of float array array;;
+  | LineToLine of (float array * float) array
+  | LineToLineFinal of (float array * float) array;;
 
 type arg_network_comp =
     Fil  of int * int (*   (nbFiltres, sizeFiltres)  *)
