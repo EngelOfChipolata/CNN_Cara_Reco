@@ -15,7 +15,7 @@ let generateLineToLine = fun n nbN ->
 
 
 (*  info est du type "arg_network_comp list" ex:   [ Fil 3,5  ;  Pool 2  ;  Line 100  ;  Line 10  ]    *)
-let createNetwork = fun infos base_size ->
+let createNetwork = fun infos inputNature ->
   let create_suite = fun (natPrev, thenetwork) info ->		(* rec pour un fold_left ? *)
     match info,natPrev with
         (Fil (nb, size), ImgArNAT (nbImgs, sizeImgs) ) -> let convs = FilterImgs (Convolutional.randomfilterfactory size nb) in
@@ -50,7 +50,7 @@ let createNetwork = fun infos base_size ->
       | (Fil (_,_), LineNAT _ ) -> failwith "[ERROR] Impossible de convoluer sur un vecteur ligne !"
   in
   
-  let firstNat = ImgArNAT  (1, base_size) in
+  let firstNat = inputNature in
   let begnet = [] in 
   let (lastnat, truenetwork) = List.fold_left create_suite (firstNat, begnet) infos in
   List.rev truenetwork
