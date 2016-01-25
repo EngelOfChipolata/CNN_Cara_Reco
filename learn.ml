@@ -1,15 +1,15 @@
-let learnFromNothing = fun (sample, base_size) infonn popsize iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population aléatoire *)
+let learnFromNothing = fun (sample, inputNature) infonn popsize iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population aléatoire *)
   (*let base_size = Array.length sample.(0) in*)
-  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net infonn base_size) in
+  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net infonn inputNature) in
   (*let evalfun = fun net -> Neteval.success Computevision.computeVision sample (Transform.lineToTools net infonn) in*)
-  let population_init = Transform.createInlinePopulation infonn popsize base_size in
+  let population_init = Transform.createInlinePopulation infonn popsize inputNature in
   Printf.printf "On part de loin le score est  : %f\n%!" (evalfun population_init.(0));
   let bestbrain, pop_finale = De.de population_init iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
-let learnFromFile = fun (sample, base_size) file iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population chargée depuis un fichier *)
-  let info, pop = Save.open_pop file in
-  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net info base_size) in
+let learnFromFile = fun (sample, inputNature) file iter differentialw crossov -> (*Fonction qui permet d'apprendre depuis une population chargée depuis un fichier *)
+  let info, pop = Save.open_pop file inputNature in
+  let evalfun = fun net -> Neteval.evalNet Computevision.computeVision sample (Transform.lineToTools net info inputNature) in
   let bestbrain, pop_finale = De.de pop iter differentialw crossov evalfun in
   (bestbrain, pop_finale)
 
