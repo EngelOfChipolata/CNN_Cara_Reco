@@ -2,15 +2,15 @@ open Types
   
 let generateImgArToLine = fun sizeImgs nbImgs nbNeu ->
   Random.self_init ();
-  let generateOneAtL = fun i -> Array.init nbImgs ( fun j -> Array.init sizeImgs ( fun k -> Array.init sizeImgs ( fun l -> (Random.float  2.) -.1. ))) in
-  let res = Array.init nbNeu ( fun i-> (generateOneAtL i, 0.) ) in
+  let generateOneAtL = fun i -> Array.init nbImgs ( fun j -> Array.init sizeImgs ( fun k -> Array.init sizeImgs ( fun l -> (Random.float  10.) -.5. ))) in
+  let res = Array.init nbNeu ( fun i-> (generateOneAtL i, ((Random.float  10.) -.5.)) ) in
   res ;;
 
 
 let generateLineToLine = fun n nbN ->
   Random.self_init ();
-  let generateOneLtL = fun i -> Array.init n ( fun j -> (Random.float 1.)-.0.5) in
-  let cartoonRes = Array.init nbN (fun i-> (generateOneLtL i, 0.)) in
+  let generateOneLtL = fun i -> Array.init n ( fun j -> (Random.float 10.)-.5.) in
+  let cartoonRes = Array.init nbN (fun i-> (generateOneLtL i,  ((Random.float  10.) -.5.))) in
   cartoonRes ;;
 
 
