@@ -13,9 +13,9 @@ let () =
   (*
   let tab = Learn.getSample 100 in*)
   let tab = [| (img,0);(img2,1) |] in
-  let bestweights, pop_finale = Learn.learnFromNothing (tab,28) infos 50 1000 1. 0.5 in
+  let bestweights, pop_finale = Learn.learnFromNothing (tab,(ImgArNAT (1,28))) infos 50 1000 1. 0.5 in
   
-  let bestnet = Transform.lineToTools bestweights infos 28 in
+  let bestnet = Transform.lineToTools bestweights infos (ImgArNAT (1,28)) in
   
   Printf.printf "echantillon 0: \n";
   let res = Computevision.computeVision img bestnet in

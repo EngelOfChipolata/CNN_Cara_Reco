@@ -32,7 +32,7 @@ let get_ind = fun channel nbw ->
   ind
 
 (* ouvre un fichier de population, et renvoie les infos nécessaires et la population de réseau (format inline) *)
-let open_pop = fun filename ->
+let open_pop = fun filename inputNature->
   let channel = open_in filename in
   let rec get_info = fun (infs,pop) ->
     let str = input_line channel in
@@ -100,7 +100,7 @@ let open_pop = fun filename ->
       | (Fil (_,_), LineNAT _ ) -> failwith "[ERROR] Impossible de convoluer sur un vecteur ligne !"
   in
   
-  let _,nbitems = List.fold_left calcNbItems ((ImgArNAT (1,28)), 0) infos in
+  let _,nbitems = List.fold_left calcNbItems (inputNature, 0) infos in
   
   let pop = Array.init nbinds (fun _-> get_ind channel nbitems) in
   close_in channel;
