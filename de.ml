@@ -1,15 +1,20 @@
 (*Ce module présente une implémentation de l'évolution différentielle *)
 
-(*Fonction de rosenbrock en dimension 2, utilisée pour tester l'evolution différentielle*)
+(*Fonction de rosenbrock en dimension n, utilisée pour tester l'evolution différentielle*)
 let rosenbrock = fun x ->
-  (1. -. x.(0))**2. +. 100.0 *. (x.(1) -. x.(0)**2.)**2.
+  let rec sumros = fun a n ->
+    if (n == 0)
+    then a
+    else sumros (a +. 100.*.(x.(n) -. x.(n-1)**2.)**2. +. (1. -. x.(n-1)) ** 2.) (n-1)
+  in
+  sumros 0. (Array.length x - 1)
 
 (* Fonction qui initialize un individu de dimension dimsize compris entre -border et border*)
 let initrand = fun dimsize border ->
   Random.self_init ();
   Array.init dimsize (fun _ -> Random.float (2. *. border) -. border)
 
-(*Variable globale utilisée pour savoir si le signal d'arrêt à été pressée (a supprimer)*)
+(*Variable globale utilisée pour savoir si le signal d'arrêt à été pressée*)
 let global = ref false
 
 (*Fonction qui ramène un nombre entre my_min et my_max*)
