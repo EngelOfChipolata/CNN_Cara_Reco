@@ -1,5 +1,5 @@
 open Types
-
+(*transforme un tableau en n dimensions en tableau en n-1 dimensions*)
 let down1D = fun tab ->
   let oneDlist = Array.to_list tab in
   let oneD = Array.concat oneDlist in
@@ -21,10 +21,9 @@ let lineToL = fun wLToL ->
   let weiandBiais = Array.concat [weigths;biais] in
   weiandBiais
 
-
+(* transforme un réseau de sa forme tool list en tableau simple *)
 let toolsToLine = fun neurNet ->
 
-  
   let inlinedTools = List.map (fun tool ->
                 match tool with
                     FilterImgs fils -> down1D (down1D fils)
@@ -51,56 +50,53 @@ let getTabofFils = fun tab nbtot nbfils size ->
   let res = Array.init nbtot (fun i -> (( getImgTab ( Array.sub tab (i*lenFil) lenFil ) nbfils size ),biais.(i)) ) in
   res
 
-
+(* transforme un réseau de sa forme tableau simple en tool list  *)
 let lineToTools = fun tabini infos inputNature->
   let extractTool = fun (prevNat, thenetwork, tab) info ->
     match info, prevNat with
         (Fil (nbFils, sizeFils), ImgArNAT (nbImgs, sizeImgs) ) -> 
-                                            let lenConcerned = nbFils*sizeFils*sizeFils in
-                                            let tabFils = Array.sub tab 0 lenConcerned in
-                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let fils = FilterImgs (getImgTab tabFils nbFils sizeFils) in
-                                            let net = fils::thenetwork in
-                                            let newNat = ImgArNAT ( nbImgs*nbFils, sizeImgs - (sizeFils-1)  ) in
-                                            (newNat, net, tabLeft)               
-                                            
+               let lenConcerned = nbFils*sizeFils*sizeFils in
+               let tabFils = Array.sub tab 0 lenConcerned in
+               let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+               let fils = FilterImgs (getImgTab tabFils nbFils sizeFils) in
+               let net = fils::thenetwork in
+               let newNat = ImgArNAT ( nbImgs*nbFils, sizeImgs - (sizeFils-1)  ) in
+               (newNat, net, tabLeft)               
+               
       | (Pool div, ImgArNAT (nbImgs, sizeImgs) ) ->
-                                            let pool = Poolfct Pooling.maxPoolConvImg in
-                                            let net = pool::thenetwork in
-                                            let newNat = ImgArNAT ( nbImgs, sizeImgs/div) in
-                                            (newNat, net, tab)
-                                             
-                                                   
+               let pool = Poolfct Pooling.maxPoolConvImg in
+               let net = pool::thenetwork in
+               let newNat = ImgArNAT ( nbImgs, sizeImgs/div) in
+               (newNat, net, tab)
+                
       | (Line nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> 
-                                            let lenConcerned = nbneus*nbImgs*sizeImgs*sizeImgs+nbneus in
-                                            let tabNeu = Array.sub tab 0 lenConcerned in
-                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let iToLine = ImgsToLine (getTabofFils tabNeu nbneus nbImgs sizeImgs) in
-                                            let net = iToLine::thenetwork in
-                                            let newNat = LineNAT (nbneus) in
-                                            (newNat, net, tabLeft)
+               let lenConcerned = nbneus*nbImgs*sizeImgs*sizeImgs+nbneus in
+               let tabNeu = Array.sub tab 0 lenConcerned in
+               let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+               let iToLine = ImgsToLine (getTabofFils tabNeu nbneus nbImgs sizeImgs) in
+               let net = iToLine::thenetwork in
+               let newNat = LineNAT (nbneus) in
+               (newNat, net, tabLeft)
 
       | (Line nbneus, LineNAT lenprev ) ->
-                                            let lenConcerned = nbneus*lenprev in
-                                            (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
-                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let lineToLine = 
-                                                    let biais = Array.sub tab (nbneus*lenprev) nbneus in
-                                                    LineToLine (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
-                                            let net = lineToLine::thenetwork in
-                                            let newNat = LineNAT (nbneus) in
-                                            (newNat, net, tabLeft)
+               let lenConcerned = nbneus*lenprev in
+               let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+               let lineToLine = 
+                 let biais = Array.sub tab (nbneus*lenprev) nbneus in
+                 LineToLine (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
+               let net = lineToLine::thenetwork in
+               let newNat = LineNAT (nbneus) in
+               (newNat, net, tabLeft)
       
       | (LineFinal nbneus, LineNAT lenprev ) ->
-                                            let lenConcerned = nbneus*lenprev in
-                                           (* let tabConcerned = Array.sub tab 0 lenConcerned in *)
-                                            let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
-                                            let lineToLine = 
-                                                    let biais = Array.sub tab (nbneus*lenprev) nbneus in
-                                                    LineToLineFinal (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
-                                            let net = lineToLine::thenetwork in
-                                            let newNat = LineNAT (nbneus) in
-                                            (newNat, net, tabLeft)
+               let lenConcerned = nbneus*lenprev in
+               let tabLeft = Array.sub tab lenConcerned (Array.length tab - lenConcerned) in
+               let lineToLine = 
+                 let biais = Array.sub tab (nbneus*lenprev) nbneus in
+                 LineToLineFinal (Array.init nbneus (fun i -> ((Array.sub tab (i*lenprev) lenprev), biais.(i) ))) in
+               let net = lineToLine::thenetwork in
+               let newNat = LineNAT (nbneus) in
+               (newNat, net, tabLeft)
 
       | (LineFinal nbneus, ImgArNAT (nbImgs, sizeImgs) ) -> failwith "[ERROR] Cas non pris en compte : LineFinal après un array d'images."
       | (Pool _, LineNAT _  ) -> failwith "[ERROR] Pooling impossible sur un vecteur ligne !"
@@ -111,7 +107,7 @@ let lineToTools = fun tabini infos inputNature->
   let (lastnat, truenetwork, tableft) = List.fold_left extractTool (nat, network, tabini) infos in
   List.rev truenetwork
 
-
-let createInlinePopulation = fun info nb base_size->
-  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info base_size)) in
+(* crée une population de réseaux en ligne*)
+let createInlinePopulation = fun info nb inputNature->
+  let population = Array.init nb (fun _ -> toolsToLine (Createnetwork.createNetwork info inputNature)) in
   population 

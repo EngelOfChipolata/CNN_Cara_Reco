@@ -1,4 +1,4 @@
-
+(*fait la somme des xi.wi et du biais pour le neurone considéré*)
 let funSum = fun imgs (isToNeuW, bias) ->
   let nbImgsNeu = Array.length isToNeuW in
   let nbImgs = Array.length imgs in
@@ -7,10 +7,10 @@ let funSum = fun imgs (isToNeuW, bias) ->
   let ry = Array.length isToNeuW.(0).(0) - 1 in
   
   let acc = ref 0. in
-  
-  for iImgs = 0 to nbImgs-1 do      (* n° layers *)
-    for x = 0 to rx do    (* n° lignes layer *)
-      for y = 0 to ry do  (* n° colnnes layer *)
+
+  for iImgs = 0 to nbImgs-1 do      (* n° layer *)
+    for x = 0 to rx do    (* n° ligne layer *)
+      for y = 0 to ry do  (* n° colonne layer *)
         acc:= !acc +. imgs.(iImgs).(x).(y) *. isToNeuW.(iImgs).(x).(y)
       done
     done
@@ -18,12 +18,11 @@ let funSum = fun imgs (isToNeuW, bias) ->
   acc:= !acc +. bias;
   !acc;;
 
+(*calcule la valeurs de sortie des neuronnes*)
 let creaNeu = fun fctseuil fctsomme isToLW imgs->
-  (* Longueur du reseau de neuronnes*)
-  let rm = Array.length isToLW in     (* nombre de neurones en sortie *)
-  (* val de sortie des neuronnes *)
-  let valNeu = Array.init rm (fun i -> fctseuil (fctsomme imgs isToLW.(i))  ) in
+  let valNeu = Array.map (fun weightsNeu -> fctseuil (fctsomme imgs weightsNeu) ) isToLW in
   valNeu;;
 
+(*application partielle utilisée couramment*)
 let computeImgsToLine = creaNeu ActivationFcts.sigmoide funSum
 

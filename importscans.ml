@@ -8,7 +8,6 @@ let seuil = fun v ->
       
 let importimg = fun imgpath -> (*Fonction qui lit une image bitmap de taille size*size et renvoie la matrice associée *)
   let channel = open_in imgpath in
-  (*seek_in channel 63;*)
 
   let rec getSize = fun () ->
          try

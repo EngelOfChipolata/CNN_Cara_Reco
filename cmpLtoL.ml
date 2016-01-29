@@ -1,7 +1,7 @@
-let funSum = fun intVals (lsToNeuW, biais) -> (* a : neuronne de sortie sur lequel on somme ses connexions*)
-                                        (*, intRes neuronnes intermédiares cartoonRes neuronnes de sortie*)
+(*fait la somme des xi.wi et du biais pour le neurone considéré*)
+let funSum = fun intVals (lsToNeuW, biais) ->
   let nbint = Array.length intVals - 1 in
-  let s = ref 0. in    (* variable de somme *)
+  let s = ref 0. in    (* accumulateur pour la somme *)
   
   for i = 0 to nbint do      (* n° neur int *)
         s:= !s +. intVals.(i) *. lsToNeuW.(i)
@@ -10,16 +10,14 @@ let funSum = fun intVals (lsToNeuW, biais) -> (* a : neuronne de sortie sur lequ
   !s;;
 
 
-(* renvoi un tableau avec les valeurs des poids des neurones  *)
+(* renvoi un tableau avec les valeurs de sortie des neurones  *)
 let creaNeu = fun fctSeuil fctSomme lsToLW intVals ->
-  (* Longueur du reseau de neuronnes*)
-  let rm = Array.length lsToLW in     (* nombre de neurones en sortie *)
-  (* val de sortie des neuronnes *)
-  let valNeu = Array.init rm (fun i -> fctSeuil (fctSomme intVals lsToLW.(i))) in
+  let valNeu = Array.map (fun weightsNeu -> fctSeuil (fctSomme intVals weightsNeu)) lsToLW in
   valNeu;;
 
 (* application partielle de la fonction précédente  *)
 let computeLineToLine = creaNeu ActivationFcts.sigmoide funSum
 
+(* encapsulation particulière de la fonction pour la couche de sortie *)
 let computeLinetoEnd = fun weights lineVal ->
   ActivationFcts.softmax (creaNeu ActivationFcts.identity funSum weights lineVal)

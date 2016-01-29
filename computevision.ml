@@ -1,9 +1,8 @@
 open Types
-(* computeImg calcule le vecteur final en prenant en paramètres l'image et le réseau de neurones *)
 
-
+(* applique successivement les outils sur la sortie du précédent outil *)
 let computeTools = fun img network ->
-  let rec applyTool = fun input tool ->
+  let applyTool = fun input tool ->
     match (tool, input) with
       (FilterImgs filters, Imgs img) -> Imgs (Convolutional.convoFactory img filters)
     | (Poolfct poolf, Imgs cvImgs) -> poolf cvImgs
@@ -14,6 +13,8 @@ let computeTools = fun img network ->
   in
   List.fold_left applyTool img network
 
+
+(* appelle la fonction précédente, puis contrôle que la sortie est bien du type voulu *)
 let computeVision = fun img network ->
   match (computeTools img network) with
       LineValues line -> line
