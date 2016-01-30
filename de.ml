@@ -32,6 +32,7 @@ let settotrue = fun _ ->
 let de = fun population nbitermax differentialweight crossoverproba func ->
   Random.self_init (); (*Initialisation du générateur aléatoire*)
   let populationsize = Array.length population in (*On récupère la taille de la population et la dimension de chaque individu*)
+  if populationsize < 4 then failwith "Population trop petite ! DE impossible.";
   let dimensionsize = Array.length population.(0) in
   let scores = Array.init populationsize (fun _ -> None) in (* On range les scores de la population ici pour éviter de les recalculer *)
   Sys.set_signal Sys.sigint (Sys.Signal_handle settotrue); (*Ci, ctrl C est préssé à partir de maintenant on appelle la fonction settotrue*)

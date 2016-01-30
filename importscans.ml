@@ -20,7 +20,6 @@ let importimg = fun imgpath -> (*Fonction qui lit une image bitmap de taille siz
   in
   
   let size = getSize () in
-  Printf.printf "taille: %d\n" size;
   
   
   ignore(input_line channel);

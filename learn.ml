@@ -79,7 +79,7 @@ let recup = fun img corresp nb loto ->
 
   let tup = makeTuple imgSort corresp dir in
 
-  if i = (nb -1 ) then
+  if (i == nb -1 ) then
     begin
       let filename = "Save/Tirage/" ^ (string_of_int !corresp) in
       resetAndSave filename loto nb;
