@@ -1,3 +1,4 @@
+(*Ce main permet d'apprendre des 0 et des 1 *)
 open Types
 let () =
   (*let infos = [Fil (3,5); Pool 2; Line 100; LineFinal 10] in*)
